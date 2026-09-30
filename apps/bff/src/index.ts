@@ -21,7 +21,9 @@ fastify.register(helmet, {
 })
 
 fastify.register(cors, {
-  origin: true,
+  origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:5173'],
+  // TODO(Isabel): cuando el dominio esté definido, agregar CORS_ORIGIN al .env de staging y producción
+  // Ejemplo: CORS_ORIGIN=https://portal.sugarcoach.app,http://localhost:5173
   credentials: true,
 })
 

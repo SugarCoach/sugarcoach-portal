@@ -63,6 +63,13 @@ export const authPlugin = fp(
           email: decodedToken.email,
           emailVerified: decodedToken.email_verified || false,
         }
+
+        // TODO(SLOT C): agregar verificación de custom claim doctorProfileId una vez que
+        // Firebase tenga los claims configurados. Ejemplo:
+        // if (!decodedToken.doctorProfileId) {
+        //   return reply.status(403).send({ error: 'Not a verified doctor' })
+        // }
+        // req.user.doctorProfileId = decodedToken.doctorProfileId
       } catch (error) {
         return reply.status(401).send({
           error: 'Unauthorized',
