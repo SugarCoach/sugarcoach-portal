@@ -4,6 +4,7 @@ import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import { authPlugin } from './plugins/auth'
 import { linksRoutes } from './routes/links'
+import { glucoseRoutes } from './routes/glucose'
 
 const PORT = parseInt(process.env.PORT || '3001', 10)
 const HOST = process.env.HOST || '0.0.0.0'
@@ -42,6 +43,7 @@ fastify.get('/health', async (_request, _reply) => {
 
 // API v1 routes
 fastify.register(linksRoutes, { prefix: '/api/v1/links' })
+fastify.register(glucoseRoutes, { prefix: '/api/v1/glucose' })
 
 // 404 handler
 fastify.setNotFoundHandler((_request, reply) => {

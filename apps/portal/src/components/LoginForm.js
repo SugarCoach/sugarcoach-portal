@@ -1,0 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from 'react';
+export function LoginForm({ onSubmit, isLoading = false }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit(email, password);
+    };
+    return (_jsx("div", { className: "w-full max-w-md mx-auto", children: _jsxs("div", { className: "bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-8 shadow-xl", children: [_jsx("h1", { className: "text-3xl font-bold text-white mb-2", children: "SugarCoach" }), _jsx("p", { className: "text-white/60 mb-8", children: "Portal para M\u00E9dicos" }), _jsxs("form", { onSubmit: handleSubmit, className: "space-y-4", children: [_jsxs("div", { children: [_jsx("label", { className: "block text-sm font-medium text-white/80 mb-2", children: "Email" }), _jsx("input", { type: "email", value: email, onChange: (e) => setEmail(e.target.value), placeholder: "doctor@example.com", className: "w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/40", required: true })] }), _jsxs("div", { children: [_jsx("label", { className: "block text-sm font-medium text-white/80 mb-2", children: "Contrase\u00F1a" }), _jsx("input", { type: "password", value: password, onChange: (e) => setPassword(e.target.value), placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022", className: "w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/40", required: true })] }), _jsx("button", { type: "submit", disabled: isLoading, className: "w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 text-white font-semibold py-2 rounded-lg transition-all duration-200", children: isLoading ? 'Iniciando sesión...' : 'Iniciar sesión' })] }), _jsxs("p", { className: "text-center text-white/60 text-sm mt-6", children: ["\u00BFNo tienes cuenta? ", _jsx("a", { href: "#", className: "text-blue-400 hover:text-blue-300", children: "Registrate" })] })] }) }));
+}

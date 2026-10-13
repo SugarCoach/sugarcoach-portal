@@ -12,12 +12,24 @@ declare module 'fastify' {
   }
 }
 
-// Initialize Firebase Admin if not already initialized
-if (!admin.apps.length) {
+let firebaseInitialized = false
+let firebaseAvailable = false
+
+function initializeFirebase() {
+  if (firebaseInitialized) return
+  firebaseInitialized = true
+
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY
+  const isDevelopment = process.env.NODE_ENV === 'development'
 
   if (!serviceAccountKey) {
-    throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable is required')
+    if (isDevelopment) {
+      console.log('⏭️  Firebase not configured - running in mock mode (development)')
+      // In development, we'll use mock auth
+    } else {
+      console.warn('⚠️  FIREBASE_SERVICE_ACCOUNT_KEY not set - auth will be disabled')
+    }
+    return
   }
 
   try {
@@ -25,16 +37,23 @@ if (!admin.apps.length) {
       ? JSON.parse(serviceAccountKey)
       : serviceAccountKey
 
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-    })
+    if (admin.apps.length === 0) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+      })
+      firebaseAvailable = true
+    }
+    console.log('✅ Firebase Admin SDK initialized')
   } catch (error) {
-    throw new Error(`Failed to initialize Firebase Admin: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    console.error(`❌ Firebase init failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
 export const authPlugin = fp(
   async (fastify: FastifyInstance) => {
+    // Initialize Firebase on first use
+    initializeFirebase()
+
     // Hook to verify Bearer token before each request
     fastify.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
       // Skip auth for health check endpoint
@@ -45,6 +64,32 @@ export const authPlugin = fp(
       try {
         const authHeader = request.headers.authorization
 
+        // If Firebase is not available and we're in development, use mock auth
+        if (!firebaseAvailable && process.env.NODE_ENV === 'development') {
+          if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            // In dev mode without Firebase, create a mock user
+            request.user = {
+              uid: 'mock-user-dev-' + Date.now(),
+              email: 'dev@sugarcoach.local',
+              emailVerified: true,
+            }
+            return
+          }
+
+          // Parse mock token format: Bearer mock:<uid>:<email>
+          const token = authHeader.slice(7)
+          if (token.startsWith('mock:')) {
+            const [, uid, email] = token.split(':')
+            request.user = {
+              uid: uid || 'mock-doctor-dev',
+              email: email || 'doctor@sugarcoach.local',
+              emailVerified: true,
+            }
+            return
+          }
+        }
+
+        // Firebase mode
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
           return reply.status(401).send({
             error: 'Unauthorized',
