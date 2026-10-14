@@ -1,6 +1,6 @@
 import { Patient } from '../../types'
 import { glucoseChartData, mockGlucoseMeasurements, getGlucoseStatus } from '../../data/mockData'
-import { LineChart, Line, Area, AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { Area, AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface DashboardProps {
   patient: Patient

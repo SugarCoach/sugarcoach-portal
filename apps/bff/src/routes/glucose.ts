@@ -47,7 +47,7 @@ export async function glucoseRoutes(fastify: FastifyInstance) {
             offset: 0,
           },
         })
-      } catch (error) {
+      } catch {
         return reply.status(500).send({
           error: 'Internal server error',
           message: 'Failed to fetch glucose measurements',
@@ -85,7 +85,7 @@ export async function glucoseRoutes(fastify: FastifyInstance) {
           data: newMeasurement,
           message: 'Glucose measurement created successfully',
         })
-      } catch (error) {
+      } catch {
         return reply.status(500).send({
           error: 'Internal server error',
           message: 'Failed to create glucose measurement',
@@ -113,7 +113,7 @@ export async function glucoseRoutes(fastify: FastifyInstance) {
           success: true,
           data: measurement,
         })
-      } catch (error) {
+      } catch {
         return reply.status(500).send({
           error: 'Internal server error',
           message: 'Failed to fetch glucose measurement',
