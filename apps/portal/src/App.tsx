@@ -1,60 +1,56 @@
 import { useState } from 'react'
-import { LoginForm } from './components/LoginForm'
-import { Dashboard } from './components/Dashboard'
+import { mockPatients, mockDoctor } from './data/mockData'
+import { Patient, TabType } from './types'
+import Sidebar from './components/Sidebar'
+import MainContent from './components/MainContent'
 
-type AuthState = 'login' | 'authenticated'
+export default function App() {
+  const [selectedPatient, setSelectedPatient] = useState<Patient>(mockPatients[0])
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard')
+  const [searchQuery, setSearchQuery] = useState('')
 
-function App() {
-  const [authState, setAuthState] = useState<AuthState>('login')
-  const [doctorName, setDoctorName] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleLogin = async (email: string, _password: string) => {
-    setIsLoading(true)
-    try {
-      // Simulate login delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      // Extract name from email for demo
-      const name = email.split('@')[0].split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-      setDoctorName(`Dr. ${name}`)
-      setAuthState('authenticated')
-
-      // Store auth state in localStorage
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('doctorEmail', email)
-      localStorage.setItem('doctorName', `Dr. ${name}`)
-    } catch (error) {
-      console.error('Login error:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleLogout = () => {
-    setAuthState('login')
-    setDoctorName('')
-    localStorage.removeItem('isAuthenticated')
-    localStorage.removeItem('doctorEmail')
-    localStorage.removeItem('doctorName')
-  }
-
-  // Check if user was previously authenticated
-  if (!doctorName && localStorage.getItem('isAuthenticated')) {
-    const savedName = localStorage.getItem('doctorName') || ''
-    setDoctorName(savedName)
-    setAuthState('authenticated')
-  }
+  const filteredPatients = mockPatients.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center py-12 px-4">
-      {authState === 'login' ? (
-        <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
-      ) : (
-        <Dashboard doctorName={doctorName} onLogout={handleLogout} />
-      )}
+    <div className="flex h-screen bg-sc-bg">
+      {/* Top Bar */}
+      <div className="fixed top-0 left-0 right-0 h-16 bg-sc-surface border-b border-sc-border z-40">
+        <div className="h-full px-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded bg-sc-teal flex items-center justify-center text-white font-bold text-sm">
+              SC
+            </div>
+            <span className="text-lg font-semibold text-sc-text-primary">SugarCoach Portal Médico</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-sc-text-secondary">{mockDoctor.name}</span>
+            <div className="w-10 h-10 rounded-full bg-sc-teal-light flex items-center justify-center text-sc-teal-dark font-semibold">
+              {mockDoctor.avatar}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div className="flex flex-1 mt-16">
+        {/* Sidebar */}
+        <Sidebar
+          patients={filteredPatients}
+          selectedPatient={selectedPatient}
+          onSelectPatient={setSelectedPatient}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+
+        {/* Main Content */}
+        <MainContent
+          patient={selectedPatient}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+      </div>
     </div>
   )
 }
-
-export default App
