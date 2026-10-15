@@ -15,6 +15,7 @@
     "@sugarcoach/shared": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router": "7",
     "recharts": "^3.10.1"
   },
   "devDependencies": {
