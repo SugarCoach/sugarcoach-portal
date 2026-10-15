@@ -3,11 +3,15 @@ import { mockPatients, mockDoctor } from './data/mockData'
 import { Patient, TabType } from './types'
 import Sidebar from './components/Sidebar'
 import MainContent from './components/MainContent'
+import PlanSelection from './components/PlanSelection'
+
+type View = 'portal' | 'plans'
 
 export default function App() {
   const [selectedPatient, setSelectedPatient] = useState<Patient>(mockPatients[0])
   const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [searchQuery, setSearchQuery] = useState('')
+  const [view, setView] = useState<View>('portal')
 
   const filteredPatients = mockPatients.filter((p) =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -25,6 +29,15 @@ export default function App() {
             <span className="text-lg font-semibold text-sc-text-primary">SugarCoach Portal Médico</span>
           </div>
           <div className="flex items-center gap-3">
+            {view === 'portal' && (
+              <button
+                type="button"
+                onClick={() => setView('plans')}
+                className="px-4 py-2 rounded-lg bg-sc-teal text-white text-sm font-medium hover:bg-sc-teal-dark transition-colors"
+              >
+                Ver planes
+              </button>
+            )}
             <span className="text-sm text-sc-text-secondary">{mockDoctor.name}</span>
             <div className="w-10 h-10 rounded-full bg-sc-teal-light flex items-center justify-center text-sc-teal-dark font-semibold">
               {mockDoctor.avatar}
@@ -35,21 +48,27 @@ export default function App() {
 
       {/* Main Layout */}
       <div className="flex flex-1 mt-16">
-        {/* Sidebar */}
-        <Sidebar
-          patients={filteredPatients}
-          selectedPatient={selectedPatient}
-          onSelectPatient={setSelectedPatient}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
+        {view === 'plans' ? (
+          <PlanSelection onBack={() => setView('portal')} />
+        ) : (
+          <>
+            {/* Sidebar */}
+            <Sidebar
+              patients={filteredPatients}
+              selectedPatient={selectedPatient}
+              onSelectPatient={setSelectedPatient}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+            />
 
-        {/* Main Content */}
-        <MainContent
-          patient={selectedPatient}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+            {/* Main Content */}
+            <MainContent
+              patient={selectedPatient}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          </>
+        )}
       </div>
     </div>
   )
