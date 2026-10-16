@@ -8,6 +8,7 @@ import { useLoginMutation } from "../../hooks/useLoginMutation";
 import { useGoogleLoginMutation } from "../../hooks/useGoogleLoginMutation";
 import { AuthError } from "../../services/authService";
 import { PATHS } from "@/routes/paths";
+import { useToast } from "@/hooks/useToast";
 
 function EyeIcon({ off }: { off: boolean }) {
   return (
@@ -58,6 +59,7 @@ export default function LoginPage() {
   const googleMutation = useGoogleLoginMutation();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
 
   const redirectTo =
@@ -83,7 +85,7 @@ export default function LoginPage() {
       error instanceof AuthError && error.code === "INVALID_CREDENTIALS"
         ? error.message
         : "No pudimos iniciar sesión. Intentá nuevamente.";
-    // TODO: show error notification with `message`
+    toast.error(message);
     setError("root.serverError", { message });
   };
 
@@ -91,7 +93,7 @@ export default function LoginPage() {
     try {
       const { doctor } = await loginMutation.mutateAsync(values);
       signIn(doctor);
-      // TODO: show success notification (e.g. "Sesión iniciada correctamente")
+      toast.success("Sesión iniciada correctamente");
       navigate(redirectTo, { replace: true });
     } catch (error) {
       handleAuthError(error);
@@ -103,7 +105,7 @@ export default function LoginPage() {
     try {
       const { doctor } = await googleMutation.mutateAsync();
       signIn(doctor);
-      // TODO: show success notification (e.g. "Sesión iniciada correctamente")
+      toast.success("Sesión iniciada correctamente");
       navigate(redirectTo, { replace: true });
     } catch (error) {
       handleAuthError(error);
@@ -132,15 +134,6 @@ export default function LoginPage() {
         noValidate
         className="space-y-4"
       >
-        {errors.root?.serverError && (
-          <div
-            role="alert"
-            className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
-          >
-            {errors.root.serverError.message}
-          </div>
-        )}
-
         <div>
           <label
             htmlFor="email"

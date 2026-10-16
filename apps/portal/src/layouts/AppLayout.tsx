@@ -5,6 +5,7 @@ import Sidebar from "@/components/Sidebar";
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { usePatient } from "@/contexts/PatientContext";
 import { useAuth } from "../hooks/useAuth";
+import { useToast } from "@/hooks/useToast";
 
 interface AppLayoutProps {
     children?: ReactNode;
@@ -13,6 +14,7 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
     const { doctor, logout } = useAuth();
     const { filteredPatients, selectedPatient, setSelectedPatient, searchQuery, setSearchQuery } = usePatient();
+    const toast = useToast();
 
     return (
         <div className="flex h-screen w-full bg-sc-bg">
@@ -38,7 +40,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     type="button"
                     onClick={() => {
                         logout();
-                        // TODO: show info notification (e.g. "Sesión cerrada")
+                        toast.info("Sesión cerrada");
                     }}
                     aria-label="Cerrar sesión"
                     title="Cerrar sesión"
