@@ -1,6 +1,7 @@
 
 interface PatientLimitModalProps {
   patientLimit: number;
+  patientCount:number;
   onClose: () => void;
   onChangePlan: () => void;
 }
@@ -32,7 +33,7 @@ export default function PatientLimitModal({
 
           <button
             onClick={onChangePlan}
-            className="rounded-lg bg-purple-700 px-4 py-2 text-white"
+            className="rounded-lg bg-[#36BFA5] px-4 py-2 text-white"
           >
             Consultar planes
           </button>

@@ -1,6 +1,9 @@
 import { Patient } from '../types'
 import { getTimeAgo } from '../data/mockData'
-
+import PatientLimitModal from './PatientLimitModal'
+import { planLimits, SubscriptionType } from './planLimits'
+const currentSubscription: SubscriptionType = 'starter'
+const pacientLimit = planLimits[currentSubscription].patientsTotal
 interface SidebarProps {
   patients: Patient[]
   selectedPatient: Patient
@@ -18,6 +21,13 @@ export default function Sidebar({
 }: SidebarProps) {
   return (
     <div className="w-80 bg-sc-surface border-r border-sc-border flex flex-col overflow-hidden">
+      <PatientLimitModal 
+        patientCount={patients.length}
+        patientLimit={pacientLimit}
+        onClose={()=> {}}
+        onChangePlan={()=> {}}
+      />
+
       {/* Search */}
       <div className="p-4 border-b border-sc-border">
         <input
