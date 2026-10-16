@@ -1,7 +1,7 @@
-// Ahora acepta children
-import { Suspense, ReactNode } from "react";
+import { Suspense, ReactNode, useState } from "react"; // <-- 1. Importamos useState
 import { Outlet } from "react-router";
 import Sidebar from "@/components/Sidebar";
+import PairPatientModal from "@/components/PairPatientModal"; // <-- 2. Importamos tu nuevo modal
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { usePatient } from "@/contexts/PatientContext";
 import { mockDoctor } from "@/data/mockData";
@@ -12,6 +12,8 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
     const { filteredPatients, selectedPatient, setSelectedPatient, searchQuery, setSearchQuery } = usePatient();
+
+    const [isPairModalOpen, setIsPairModalOpen] = useState(false);
 
     return (
         <div className="flex h-screen w-full bg-sc-bg">
@@ -42,6 +44,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     onSelectPatient={setSelectedPatient}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    onOpenPairModal={() => setIsPairModalOpen(true)}
                 />
 
                 {/* Main Content */}
@@ -49,6 +52,15 @@ export function AppLayout({ children }: AppLayoutProps) {
                     <Suspense fallback={<LoadingFallback />}>{children || <Outlet />}</Suspense>
                 </main>
             </div>
+
+            <PairPatientModal
+                isOpen={isPairModalOpen}
+                onClose={() => setIsPairModalOpen(false)}
+                onSuccess={(newPatient) => {
+                    console.log('Paciente vinculado:', newPatient);
+                    // Aquí en el futuro puedes disparar una función para actualizar la lista de pacientes
+                }}
+            />
         </div>
     );
 }
