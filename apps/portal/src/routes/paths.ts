@@ -10,6 +10,7 @@ export const PATHS = {
     onboarding: {
         plan: "/onboarding/plan",
         medicalForm: "/onboarding/medical-form",
+        pending: "/onboarding/pending",
     },
     app: {
         root: "/app",

@@ -7,7 +7,7 @@
 // - App group → lazy, pero adentro carga todas las 5 páginas juntas (eager)
 
 import { lazy, Suspense } from "react";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { PATHS } from "./paths";
 import { authRoutesConfig, onboardingRoutesConfig, appRoutesConfig } from "./groups/routeConfigs";
@@ -20,6 +20,12 @@ const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
 // ====== ROUTER ======
 export const router = createBrowserRouter([
+    // --- RAÍZ: entra por /app, que decide si redirige al onboarding ---
+    {
+        path: "/",
+        element: <Navigate to={PATHS.app.root} replace />,
+    },
+
     // --- AUTH (lazy) ---
     {
         path: "/auth",
