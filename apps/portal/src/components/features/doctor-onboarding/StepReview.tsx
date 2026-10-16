@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { CPT_CODES, PRACTICE_TYPES, PRIVATE_PAYERS, SPECIALTIES, US_STATES } from '../constants'
-import type { DoctorOnboardingForm } from '../schema'
+import { CPT_CODES, PRACTICE_TYPES, PRIVATE_PAYERS, SPECIALTIES, US_STATES } from './constants'
+import type { DoctorOnboardingForm } from './schema'
 import { StepSection } from './FormField'
 
 const stateName = (code: string) => US_STATES.find((s) => s.code === code)?.name ?? code

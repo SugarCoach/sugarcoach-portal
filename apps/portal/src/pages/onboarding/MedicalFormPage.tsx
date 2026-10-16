@@ -4,29 +4,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
 import { PATHS } from '@/routes/paths'
-import { StepIndicator } from '@/features/doctor-onboarding/components/StepIndicator'
-import { StepIdentity } from '@/features/doctor-onboarding/components/StepIdentity'
-import { StepCredentials } from '@/features/doctor-onboarding/components/StepCredentials'
-import { StepCompliance } from '@/features/doctor-onboarding/components/StepCompliance'
-import { StepNetworks } from '@/features/doctor-onboarding/components/StepNetworks'
-import { StepCptCodes } from '@/features/doctor-onboarding/components/StepCptCodes'
-import { StepReview } from '@/features/doctor-onboarding/components/StepReview'
+import { StepIndicator } from '@/components/features/doctor-onboarding/StepIndicator'
+import { StepIdentity } from '@/components/features/doctor-onboarding/StepIdentity'
+import { StepCredentials } from '@/components/features/doctor-onboarding/StepCredentials'
+import { StepCompliance } from '@/components/features/doctor-onboarding/StepCompliance'
+import { StepNetworks } from '@/components/features/doctor-onboarding/StepNetworks'
+import { StepCptCodes } from '@/components/features/doctor-onboarding/StepCptCodes'
+import { StepReview } from '@/components/features/doctor-onboarding/StepReview'
 import {
   MOCK_DOCTOR_EMAIL,
   submitOnboarding,
-} from '@/features/doctor-onboarding/onboardingService'
+} from '@/components/features/doctor-onboarding/onboardingService'
 import {
   clearDraft,
   loadDraft,
   useDraftAutosave,
-} from '@/features/doctor-onboarding/useOnboardingDraft'
+} from '@/components/features/doctor-onboarding/useOnboardingDraft'
 import {
   onboardingSchema,
   STEP_KEYS,
   type DoctorOnboardingForm,
   type StepKey,
-} from '@/features/doctor-onboarding/schema'
-import { sameName } from '@/features/doctor-onboarding/validators'
+} from '@/components/features/doctor-onboarding/schema'
+import { sameName } from '@/components/features/doctor-onboarding/validators'
 
 const STEP_LABELS = ['Identidad', 'Credenciales', 'Compliance', 'Redes', 'Códigos CPT', 'Revisión'] as const
 const REVIEW_STEP = STEP_KEYS.length

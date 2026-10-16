@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 import { AppLayout } from "@/layouts/AppLayout";
 import { PatientLayout } from "@/layouts/PatientLayout";
 import { LoadingFallback } from "@/components/LoadingFallback";
-import { getOnboardingStatus } from "@/features/doctor-onboarding/onboardingService";
+import { getOnboardingStatus } from "@/components/features/doctor-onboarding/onboardingService";
 import { PATHS } from "../paths";
 
 // Componente que se importa con lazy() en routes/index.tsx

@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
-import { OTHER_SPECIALTY, SPECIALTIES, US_STATES } from '../constants'
-import type { DoctorOnboardingForm } from '../schema'
+import { OTHER_SPECIALTY, SPECIALTIES, US_STATES } from './constants'
+import type { DoctorOnboardingForm } from './schema'
 import { AddressFields } from './AddressFields'
 import { FieldGroupError, SelectField, StepSection, TextField } from './FormField'
 
