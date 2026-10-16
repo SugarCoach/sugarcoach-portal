@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { mockPatients, mockDoctor } from './data/mockData'
 import { Patient, TabType } from './types'
@@ -71,5 +72,6 @@ export default function App() {
         )}
       </div>
     </div>
+
   )
 }
