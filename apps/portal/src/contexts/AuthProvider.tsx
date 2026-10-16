@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { AuthContext } from "./auth-context";
+import { AuthContext } from "../contexts/auth-context";
 import { logoutRequest } from "../services/authService";
 import type { Doctor } from "../types/auth";
 

@@ -9,6 +9,7 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router";
 import { LoadingFallback } from "@/components/LoadingFallback";
+import { ProtectedRoute, PublicOnlyRoute } from "@/components/auth/ProtectedRoute";
 import { PATHS } from "./paths";
 import { authRoutesConfig, onboardingRoutesConfig, appRoutesConfig } from "./groups/routeConfigs";
 
@@ -24,9 +25,11 @@ export const router = createBrowserRouter([
     {
         path: "/auth",
         element: (
-            <Suspense fallback={<LoadingFallback />}>
-                <AuthRoutesGroup />
-            </Suspense>
+            <PublicOnlyRoute>
+                <Suspense fallback={<LoadingFallback />}>
+                    <AuthRoutesGroup />
+                </Suspense>
+            </PublicOnlyRoute>
         ),
         children: authRoutesConfig,
     },
@@ -35,9 +38,11 @@ export const router = createBrowserRouter([
     {
         path: "/onboarding",
         element: (
-            <Suspense fallback={<LoadingFallback />}>
-                <OnboardingRoutesGroup />
-            </Suspense>
+            <PublicOnlyRoute>
+                <Suspense fallback={<LoadingFallback />}>
+                    <OnboardingRoutesGroup />
+                </Suspense>
+            </PublicOnlyRoute>
         ),
         children: onboardingRoutesConfig,
     },
@@ -46,9 +51,11 @@ export const router = createBrowserRouter([
     {
         path: PATHS.app.root,
         element: (
-            <Suspense fallback={<LoadingFallback />}>
-                <AppRoutesGroup />
-            </Suspense>
+            <ProtectedRoute>
+                <Suspense fallback={<LoadingFallback />}>
+                    <AppRoutesGroup />
+                </Suspense>
+            </ProtectedRoute>
         ),
         children: appRoutesConfig,
     },
