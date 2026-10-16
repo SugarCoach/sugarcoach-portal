@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { MAX_OTHER_NETWORKS, PRACTICE_TYPES, PRIVATE_PAYERS, US_STATES } from './constants'
-import type { DoctorOnboardingForm } from './schema'
+import { MAX_OTHER_NETWORKS, PRACTICE_TYPES, PRIVATE_PAYERS, US_STATES } from '../constants'
+import type { DoctorOnboardingForm } from '../schema'
 import { CheckboxField, SelectField, StepSection, TextField } from './FormField'
 
 const STATE_OPTIONS = US_STATES.map((s) => ({ value: s.code, label: `${s.name} (${s.code})` }))

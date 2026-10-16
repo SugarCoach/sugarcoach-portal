@@ -1,4 +1,4 @@
-import { BAA_VERSION, DATA_USE_DECLARATION_VERSION, TOS_VERSION } from './constants'
+import { BAA_VERSION, DATA_USE_DECLARATION_VERSION, TOS_VERSION } from '../constants'
 import { CheckboxField, StepSection, TextField } from './FormField'
 
 // TODO(legal): mostrar/enlazar el texto completo de cada documento cuando legal lo entregue.

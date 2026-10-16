@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from 'react'
 import { get, useFormContext, type FieldPath } from 'react-hook-form'
-import type { DoctorOnboardingForm } from './schema'
+import type { DoctorOnboardingForm } from '../schema'
 
 export type FieldName = FieldPath<DoctorOnboardingForm>
 

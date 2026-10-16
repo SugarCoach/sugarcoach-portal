@@ -1,5 +1,5 @@
 import { SelectField, TextField, type FieldName } from './FormField'
-import { US_STATES } from './constants'
+import { US_STATES } from '../constants'
 
 const STATE_OPTIONS = US_STATES.map((s) => ({ value: s.code, label: `${s.name} (${s.code})` }))
 

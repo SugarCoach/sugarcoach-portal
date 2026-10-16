@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
-import { CPT_CODES } from './constants'
-import type { DoctorOnboardingForm } from './schema'
+import { CPT_CODES } from '../constants'
+import type { DoctorOnboardingForm } from '../schema'
 import { FieldGroupError, StepSection } from './FormField'
 
 export function StepCptCodes() {
