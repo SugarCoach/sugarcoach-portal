@@ -3,23 +3,26 @@ import { Link } from "react-router";
 import { RadioGroup } from "radix-ui";
 import { PATHS } from "@/routes/paths";
 
-type PlanId = "starter" | "growth" | "pro";
+type PlanId = "starter" | "growth" | "professional" | "enterprise";
 
 interface Plan {
     id: PlanId;
     name: string;
     price: number;
-    recommended?: boolean;
+    patientLimitLabel: "Hasta" | "Más de";
+    patientLimit: number;
+    popular?: boolean;
 }
 
 const plans: Plan[] = [
-    { id: "starter", name: "Starter", price: 50 },
-    { id: "growth", name: "Growth", price: 75 },
-    { id: "pro", name: "Pro", price: 100, recommended: true },
+    { id: "starter", name: "Starter", price: 50, patientLimitLabel: "Hasta", patientLimit: 10, popular: true },
+    { id: "growth", name: "Growth", price: 75, patientLimitLabel: "Hasta", patientLimit: 20 },
+    { id: "professional", name: "Professional", price: 100, patientLimitLabel: "Hasta", patientLimit: 50 },
+    { id: "enterprise", name: "Enterprise", price: 150, patientLimitLabel: "Más de", patientLimit: 50 },
 ];
 
 export default function PlanSelectionPage() {
-    const [selectedPlan, setSelectedPlan] = useState<PlanId>("pro");
+    const [selectedPlan, setSelectedPlan] = useState<PlanId>("starter");
 
     return (
         <div className="relative">
@@ -29,7 +32,7 @@ export default function PlanSelectionPage() {
                 style={{ clipPath: "polygon(0 0, 100% 0, 100% 55%, 0 100%)" }}
             />
 
-            <div className="relative mx-auto max-w-xl px-4 py-10">
+            <div className="relative mx-auto max-w-4xl px-4 py-10">
                 <Link
                     to={PATHS.app.root}
                     className="mb-6 inline-block text-sm font-medium text-white/90 hover:text-white"
@@ -41,7 +44,7 @@ export default function PlanSelectionPage() {
                     <h2 id="plan-selection-title" className="text-xl font-semibold text-sc-text-primary">
                         Selección de Plan y Pago
                     </h2>
-                    <p className="mb-5 mt-1 text-sm text-sc-text-secondary">
+                    <p className="mb-6 mt-1 text-sm text-sc-text-secondary">
                         Elegí el plan que mejor se adapte a tu práctica
                     </p>
 
@@ -49,22 +52,32 @@ export default function PlanSelectionPage() {
                         value={selectedPlan}
                         onValueChange={(value) => setSelectedPlan(value as PlanId)}
                         aria-labelledby="plan-selection-title"
-                        className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3"
+                        className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
                     >
                         {plans.map((plan) => (
                             <RadioGroup.Item
                                 key={plan.id}
                                 value={plan.id}
-                                className="relative rounded-sc-lg border border-sc-border p-4 text-left transition-colors hover:bg-sc-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sc-teal data-[state=checked]:border-sc-teal data-[state=checked]:bg-sc-teal-light"
+                                className="relative rounded-sc-lg border border-sc-border bg-sc-bg px-4 py-5 text-center transition-colors hover:bg-sc-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sc-teal data-[state=checked]:border-sc-teal data-[state=checked]:bg-sc-teal-light"
                             >
-                                <RadioGroup.Indicator className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-sc-teal text-xs text-white">
-                                    ✓
-                                </RadioGroup.Indicator>
-                                <div className="text-sm font-medium text-sc-text-primary">{plan.name}</div>
-                                <div className="mt-1 text-2xl font-semibold text-sc-text-primary">${plan.price}</div>
-                                {plan.recommended && (
-                                    <div className="mt-1 text-xs text-sc-text-secondary">Recomendado</div>
+                                {plan.popular && (
+                                    <span className="absolute -top-px right-3 rounded-b-sc-md bg-sc-teal px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                                        Más popular
+                                    </span>
                                 )}
+                                <div className="text-xs font-semibold uppercase tracking-wider text-sc-text-secondary">
+                                    {plan.name}
+                                </div>
+                                <div className="mt-3 flex items-baseline justify-center gap-2 font-mono">
+                                    <span className="text-3xl font-bold text-sc-text-primary">${plan.price}</span>
+                                    <span className="text-sm text-sc-text-muted">/mes</span>
+                                </div>
+                                <div className="mt-3 text-sm text-sc-text-secondary">
+                                    {plan.patientLimitLabel}{" "}
+                                    <strong className="font-semibold text-sc-text-primary">
+                                        {plan.patientLimit} pacientes
+                                    </strong>
+                                </div>
                             </RadioGroup.Item>
                         ))}
                     </RadioGroup.Root>
