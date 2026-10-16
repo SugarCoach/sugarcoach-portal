@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { mockPatients, mockDoctor } from './data/mockData'
 import { Patient, TabType } from './types'
+import { planLimits, SubscriptionType } from './components/planLimits'
 import Sidebar from './components/Sidebar'
 import MainContent from './components/MainContent'
 
