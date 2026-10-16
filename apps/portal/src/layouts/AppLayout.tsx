@@ -1,10 +1,12 @@
-import { Suspense, ReactNode, useState } from "react"; // <-- 1. Importamos useState
-import { Outlet } from "react-router";
+// Ahora acepta children
+import { Suspense, ReactNode, useState } from "react";
+import { Link, Outlet } from "react-router";
 import Sidebar from "@/components/Sidebar";
 import PairPatientModal from "@/components/PairPatientModal"; // <-- 2. Importamos tu nuevo modal
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { usePatient } from "@/contexts/PatientContext";
 import { mockDoctor } from "@/data/mockData";
+import { PATHS } from "@/routes/paths";
 
 interface AppLayoutProps {
     children?: ReactNode;
@@ -27,6 +29,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                         <span className="text-lg font-semibold text-sc-text-primary">SugarCoach Portal Médico</span>
                     </div>
                     <div className="flex items-center gap-3">
+                        <Link
+                            to={PATHS.onboarding.plan}
+                            className="px-4 py-2 rounded-lg bg-sc-teal text-white text-sm font-medium hover:bg-sc-teal-dark transition-colors"
+                        >
+                            Ver planes
+                        </Link>
                         <span className="text-sm text-sc-text-secondary">{mockDoctor.name}</span>
                         <div className="w-10 h-10 rounded-full bg-sc-teal-light flex items-center justify-center text-sc-teal-dark font-semibold">
                             {mockDoctor.avatar}
