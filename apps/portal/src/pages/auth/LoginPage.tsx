@@ -72,6 +72,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    mode: "onTouched",
     defaultValues: { email: "", password: "" },
   });
 
@@ -115,134 +116,132 @@ export default function LoginPage() {
     }`;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-sc-bg px-4">
-      <div className="w-full max-w-md rounded-xl border border-sc-border bg-sc-surface p-8 shadow-sm">
-        {/* Brand */}
-        <div className="mb-8 flex items-center justify-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sc-teal text-base font-bold text-white">
-            SC
+    <div className="w-[calc(100vw-2rem)] max-w-[32rem] rounded-xl border border-sc-border bg-sc-surface p-6 shadow-sm sm:p-8 md:p-10">
+      {/* Brand */}
+      <div className="mb-8 flex items-center justify-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sc-teal text-base font-bold text-white">
+          SC
+        </div>
+        <span className="text-2xl font-semibold text-sc-text-primary">
+          SugarCoach
+        </span>
+      </div>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="space-y-4"
+      >
+        {errors.root?.serverError && (
+          <div
+            role="alert"
+            className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          >
+            {errors.root.serverError.message}
           </div>
-          <span className="text-2xl font-semibold text-sc-text-primary">
-            SugarCoach
-          </span>
+        )}
+
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-1 block text-xs font-medium text-sc-text-primary"
+          >
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={inputClass(!!errors.email)}
+            {...register("email")}
+          />
+          {errors.email && (
+            <p id="email-error" className="mt-1 text-xs text-red-600">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          className="space-y-4"
-        >
-          {errors.root?.serverError && (
-            <div
-              role="alert"
-              className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              {errors.root.serverError.message}
-            </div>
-          )}
-
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-xs font-medium text-sc-text-primary"
-            >
-              Email
-            </label>
+        <div>
+          <label
+            htmlFor="password"
+            className="mb-1 block text-xs font-medium text-sc-text-primary"
+          >
+            Password
+          </label>
+          <div className="relative">
             <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              className={inputClass(!!errors.email)}
-              {...register("email")}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              aria-invalid={!!errors.password}
+              aria-describedby={
+                errors.password ? "password-error" : undefined
+              }
+              className={`${inputClass(!!errors.password)} pr-10`}
+              {...register("password")}
             />
-            {errors.email && (
-              <p id="email-error" className="mt-1 text-xs text-red-600">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-xs font-medium text-sc-text-primary"
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={
+                showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+              }
+              className="absolute inset-y-0 right-3 flex items-center text-sc-text-secondary hover:text-sc-text-primary"
             >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
-                aria-invalid={!!errors.password}
-                aria-describedby={
-                  errors.password ? "password-error" : undefined
-                }
-                className={`${inputClass(!!errors.password)} pr-10`}
-                {...register("password")}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={
-                  showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
-                }
-                className="absolute inset-y-0 right-3 flex items-center text-sc-text-secondary hover:text-sc-text-primary"
-              >
-                <EyeIcon off={showPassword} />
-              </button>
-            </div>
-            {errors.password && (
-              <p id="password-error" className="mt-1 text-xs text-red-600">
-                {errors.password.message}
-              </p>
-            )}
+              <EyeIcon off={showPassword} />
+            </button>
           </div>
-
-          <button
-            type="submit"
-            disabled={isBusy}
-            className="w-full rounded-full bg-sc-teal py-2.5 text-sm font-semibold text-white transition hover:bg-sc-teal-dark disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isSubmitting ? "Ingresando…" : "Iniciar Sesión"}
-          </button>
-
-          <Link
-            to={PATHS.auth.signup}
-            aria-disabled={isBusy}
-            className="block w-full rounded-full border border-sc-teal py-2.5 text-center text-sm font-semibold text-sc-teal-dark transition hover:bg-sc-teal-light"
-          >
-            Registrarse
-          </Link>
-        </form>
-
-        {/* Divider */}
-        <div className="my-5 flex items-center gap-3" role="separator">
-          <span className="h-px flex-1 bg-sc-border" />
-          {/* Change to "o" if the UI stays fully in Spanish */}
-          <span className="text-xs text-sc-text-secondary">or</span>
-          <span className="h-px flex-1 bg-sc-border" />
+          {errors.password && (
+            <p id="password-error" className="mt-1 text-xs text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <button
-          type="button"
-          onClick={onGoogleLogin}
+          type="submit"
           disabled={isBusy}
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-sc-border bg-white py-2.5 text-sm font-medium text-sc-text-primary shadow-sm transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-full bg-sc-teal py-2.5 text-sm font-semibold text-white transition hover:bg-sc-teal-dark disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <GoogleIcon />
-          {googleMutation.isPending
-            ? "Conectando…"
-            : "Iniciar sesión con Google"}
+          {isSubmitting ? "Ingresando…" : "Iniciar Sesión"}
         </button>
 
-        <p className="mt-6 text-center text-xs text-sc-text-secondary">
-          {/* TODO: remove once a real backend exists */}
-          Demo: doctor@sugarcoach.com / Password123
-        </p>
+        <Link
+          to={PATHS.auth.signup}
+          aria-disabled={isBusy}
+          className="block w-full rounded-full border border-sc-teal py-2.5 text-center text-sm font-semibold text-sc-teal-dark transition hover:bg-sc-teal-light"
+        >
+          Registrarse
+        </Link>
+      </form>
+
+      {/* Divider */}
+      <div className="my-5 flex items-center gap-3" role="separator">
+        <span className="h-px flex-1 bg-sc-border" />
+        {/* Change to "o" if the UI stays fully in Spanish */}
+        <span className="text-xs text-sc-text-secondary">or</span>
+        <span className="h-px flex-1 bg-sc-border" />
       </div>
-    </main>
+
+      <button
+        type="button"
+        onClick={onGoogleLogin}
+        disabled={isBusy}
+        className="flex w-full items-center justify-center gap-2 rounded-full border border-sc-border bg-white py-2.5 text-sm font-medium text-sc-text-primary shadow-sm transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <GoogleIcon />
+        {googleMutation.isPending
+          ? "Conectando…"
+          : "Iniciar sesión con Google"}
+      </button>
+
+      <p className="mt-6 text-center text-xs text-sc-text-secondary">
+        {/* TODO: remove once a real backend exists */}
+        Demo: doctor@sugarcoach.com / Password123
+      </p>
+    </div>
   );
 }
