@@ -10,6 +10,7 @@ import LoginPage from "@/pages/auth/LoginPage";
 import SignupPage from "@/pages/auth/SignupPage";
 import PlanSelectionPage from "@/pages/onboarding/PlanSelectionPage";
 import MedicalFormPage from "@/pages/onboarding/MedicalFormPage";
+import PendingVerificationPage from "@/pages/onboarding/PendingVerificationPage";
 import DashboardPage from "@/pages/app/DashboardPage";
 import HistoryPage from "@/pages/app/HistoryPage";
 import StatsPage from "@/pages/app/StatsPage";
@@ -26,6 +27,7 @@ export const authRoutesConfig: RouteObject[] = [
 export const onboardingRoutesConfig: RouteObject[] = [
     { path: PATHS.onboarding.plan, element: createElement(PlanSelectionPage) },
     { path: PATHS.onboarding.medicalForm, element: createElement(MedicalFormPage) },
+    { path: PATHS.onboarding.pending, element: createElement(PendingVerificationPage) },
 ];
 
 // App routes config
