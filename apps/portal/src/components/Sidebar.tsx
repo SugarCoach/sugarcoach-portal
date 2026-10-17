@@ -10,6 +10,7 @@ interface SidebarProps {
   onSelectPatient: (patient: Patient) => void
   searchQuery: string
   onSearchChange: (query: string) => void
+  onOpenPairModal: () => void // Solo emite la señal para abrir el modal
 }
 
 export default function Sidebar({
@@ -18,6 +19,7 @@ export default function Sidebar({
   onSelectPatient,
   searchQuery,
   onSearchChange,
+  onOpenPairModal,
 }: SidebarProps) {
   return (
     <div className="w-80 bg-sc-surface border-r border-sc-border flex flex-col overflow-hidden">
@@ -30,6 +32,16 @@ export default function Sidebar({
 
       {/* Search */}
       <div className="p-4 border-b border-sc-border">
+      {/* Botón superior de Agregar paciente y Barra de Búsqueda */}
+      <div className="p-4 border-b border-sc-border flex flex-col gap-3">
+        <button
+          onClick={onOpenPairModal}
+          className="w-full flex items-center justify-center gap-2 bg-sc-teal hover:opacity-90 text-white font-medium py-2.5 px-4 rounded-xl transition-colors shadow-sm text-sm"
+        >
+          <span>➕</span>
+          <span>Agregar paciente</span>
+        </button>
+
         <input
           type="text"
           placeholder="Buscar paciente..."
@@ -52,12 +64,11 @@ export default function Sidebar({
             }`}
           >
             <div className="flex items-start gap-3">
-              {/* Avatar */}
+               {/* Avatar */}
               <div className="w-10 h-10 rounded-full bg-sc-teal-light flex items-center justify-center text-sc-teal-dark font-semibold text-sm flex-shrink-0 mt-0.5">
                 {patient.avatar}
               </div>
 
-              {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-sc-text-primary truncate">{patient.name}</div>
                 <div className="text-xs text-sc-text-muted">
