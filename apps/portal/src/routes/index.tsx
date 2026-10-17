@@ -38,11 +38,11 @@ export const router = createBrowserRouter([
     {
         path: "/onboarding",
         element: (
-            <PublicOnlyRoute>
+            // <PublicOnlyRoute>  SE COMENTO AHORA SOLAMENTE PARA PODER PROBAR EL ONBOARDING ESTANDO AUN LOGUEADO
                 <Suspense fallback={<LoadingFallback />}>
                     <OnboardingRoutesGroup />
                 </Suspense>
-            </PublicOnlyRoute>
+            // </PublicOnlyRoute>
         ),
         children: onboardingRoutesConfig,
     },
