@@ -1,4 +1,3 @@
-// Ahora acepta children
 import { Suspense, ReactNode, useState } from "react";
 import { Link, Outlet } from "react-router";
 import Sidebar from "@/components/Sidebar";

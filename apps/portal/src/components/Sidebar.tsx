@@ -23,20 +23,21 @@ export default function Sidebar({
 }: SidebarProps) {
     return (
         <div className="w-80 bg-sc-surface border-r border-sc-border flex flex-col overflow-hidden">
-            <PatientLimitModal
-                patientCount={patients.length}
-                patientLimit={pacientLimit}
-                onClose={() => {}}
-                onChangePlan={() => {}}
-            />
-
             {/* Search */}
             <div className="p-4 border-b border-sc-border">
                 {/* Botón superior de Agregar paciente y Barra de Búsqueda */}
-                <div className="p-4 border-b border-sc-border flex flex-col gap-3">
+                <div className="py-4 border-b border-sc-border flex flex-col gap-3">
+                    <PatientLimitModal
+                        patientCount={patients.length}
+                        patientLimit={pacientLimit}
+                        onClose={() => {}}
+                        onChangePlan={() => {}}
+                    />
+
                     <button
                         onClick={onOpenPairModal}
-                        className="w-full flex items-center justify-center gap-2 bg-sc-teal hover:opacity-90 text-white font-medium py-2.5 px-4 rounded-xl transition-colors shadow-sm text-sm"
+                        className="w-full flex items-center justify-center gap-2 bg-sc-teal hover:opacity-90 text-white font-medium py-2.5 px-4 
+                        rounded-md transition-colors shadow-sm text-sm"
                     >
                         <span>➕</span>
                         <span>Agregar paciente</span>
