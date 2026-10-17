@@ -1,11 +1,13 @@
 import { Suspense, ReactNode, useState } from "react";
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import Sidebar from "@/components/Sidebar";
-import PairPatientModal from "@/components/PairPatientModal"; // <-- 2. Importamos tu nuevo modal
+import PairPatientModal from "@/components/PairPatientModal";
+import PatientLimitModal from "@/components/PatientLimitModal";
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { usePatient } from "@/contexts/PatientContext";
 import { mockDoctor } from "@/data/mockData";
 import { PATHS } from "@/routes/paths";
+import { Link } from "react-router";
 
 interface AppLayoutProps {
     children?: ReactNode;
@@ -14,7 +16,34 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
     const { filteredPatients, selectedPatient, setSelectedPatient, searchQuery, setSearchQuery } = usePatient();
 
+    // ====== LÓGICA DE MODALES ======
+    // Estado para controlar qué modal está abierto
     const [isPairModalOpen, setIsPairModalOpen] = useState(false);
+    const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
+    const [patientsCount, setPatientsCount] = useState(filteredPatients.length);
+
+    // Límite de pacientes (hardcodeado por ahora, luego viene del backend)
+    const PATIENT_LIMIT = 5;
+
+    // Cuando se aprieta "Agregar paciente"
+    const handleAddPatient = () => {
+        // Si ya alcanzó el límite, mostrar modal de límite
+        if (patientsCount >= PATIENT_LIMIT) {
+            setIsLimitModalOpen(true);
+            return;
+        }
+        // Si no, mostrar modal de QR
+        setIsPairModalOpen(true);
+    };
+
+    // Cuando se vincula un paciente exitosamente
+    const handlePairingSuccess = (newPatient: any) => {
+        console.log("Paciente vinculado:", newPatient);
+        // Incrementar contador de pacientes
+        setPatientsCount((prev) => prev + 1);
+        // Cerrar modal de QR
+        setIsPairModalOpen(false);
+    };
 
     return (
         <div className="flex h-screen w-full bg-sc-bg">
@@ -51,7 +80,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     onSelectPatient={setSelectedPatient}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
-                    onOpenPairModal={() => setIsPairModalOpen(true)}
+                    onOpenPairModal={handleAddPatient}
                 />
 
                 {/* Main Content */}
@@ -60,13 +89,18 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </main>
             </div>
 
+            {/* Modal de QR */}
             <PairPatientModal
                 isOpen={isPairModalOpen}
                 onClose={() => setIsPairModalOpen(false)}
-                onSuccess={(newPatient) => {
-                    console.log('Paciente vinculado:', newPatient);
-                    // Aquí en el futuro puedes disparar una función para actualizar la lista de pacientes
-                }}
+                onSuccess={handlePairingSuccess}
+            />
+
+            {/* Modal de Límite de Pacientes */}
+            <PatientLimitModal
+                isOpen={isLimitModalOpen}
+                patientLimit={PATIENT_LIMIT}
+                onClose={() => setIsLimitModalOpen(false)}
             />
         </div>
     );
